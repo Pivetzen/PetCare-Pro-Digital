@@ -1,62 +1,92 @@
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyaOyd-1YkAbmh5CBHddbeVB0Zde2evnQSLqONNfWG-7WgeKlqn-pF4rE4CbyH3-BLlbA/exec";
+let DADOS_GLOBAIS = {};
+let PET_ATUAL = "";
 
-function enviarDados() {
-    const btn = document.getElementById('btnSalvar');
-    
-    // Coletando todos os dados do perfil + vacina
+async function carregarDados() {
+    const res = await fetch(SCRIPT_URL);
+    DADOS_GLOBAIS = await res.json();
+    renderizarBotoesPets();
+}
+
+function renderizarBotoesPets() {
+    const div = document.getElementById('lista-pets-botoes');
+    div.innerHTML = "";
+    // Pula cabeçalho
+    DADOS_GLOBAIS.pets.slice(1).forEach(pet => {
+        const btn = document.createElement('button');
+        btn.className = "btn-pet";
+        btn.innerText = `🐾 Ver Carteira: ${pet[0]}`;
+        btn.onclick = () => abrirCarteira(pet[0]);
+        div.appendChild(btn);
+    });
+}
+
+function cadastrarPet() {
     const payload = {
-        pet: document.getElementById('nomePet').value,
+        tipoPost: "CADASTRO_PET",
+        nome: document.getElementById('nomePet').value,
         especie: document.getElementById('especie').value,
         raca: document.getElementById('raca').value,
         idade: document.getElementById('idade').value,
         peso: document.getElementById('peso').value,
         sexo: document.getElementById('sexo').value,
-        vacina: document.getElementById('vacinaNome').value,
-        data: document.getElementById('vacinaData').value
+        r_marca: document.getElementById('r_marca').value,
+        r_tipo: document.getElementById('r_tipo').value,
+        r_qtd: document.getElementById('r_qtd').value,
+        r_freq: document.getElementById('r_freq').value,
+        p_marca: document.getElementById('p_marca').value,
+        p_tipo: document.getElementById('p_tipo').value,
+        p_qtd: document.getElementById('p_qtd').value,
+        p_freq: document.getElementById('p_freq').value
     };
 
-    if(!payload.pet || !payload.vacina) return alert("Por favor, preencha ao menos o Nome do Pet e a Vacina!");
+    fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) })
+    .then(() => { alert("Pet Cadastrado!"); location.reload(); });
+}
 
-    btn.innerText = "Salvando...";
-    btn.disabled = true;
+function abrirCarteira(nomePet) {
+    PET_ATUAL = nomePet;
+    document.getElementById('tela-home').style.display = 'none';
+    document.getElementById('tela-carteira').style.display = 'block';
+    document.getElementById('nome-pet-selecionado').innerText = nomePet;
 
-    fetch(SCRIPT_URL, {
-        method: "POST",
-        body: JSON.stringify(payload)
-    })
-    .then(() => {
-        alert("Dados registrados na planilha!");
-        btn.innerText = "Salvar na Planilha";
-        btn.disabled = false;
-        carregarVacinas();
-    })
-    .catch(error => {
-        console.error("Erro:", error);
-        alert("Erro ao salvar. Verifique a URL do Script.");
-        btn.disabled = false;
+    const dadosPet = DADOS_GLOBAIS.pets.find(p => p[0] === nomePet);
+    const detalhe = document.getElementById('detalhe-pet');
+    detalhe.innerHTML = `
+        <div class="info-box">
+            <h3>📋 Dados: ${dadosPet[0]} (${dadosPet[5]})</h3>
+            <p>${dadosPet[1]} | ${dadosPet[2]} | ${dadosPet[3]} anos | ${dadosPet[4]}kg</p>
+            <hr>
+            <h3>🥣 Alimentação Principal</h3>
+            <p>${dadosPet[6]} (${dadosPet[7]}) - ${dadosPet[8]}g, ${dadosPet[9]}x ao dia</p>
+            <h3>🦴 Petiscos</h3>
+            <p>${dadosPet[10]} (${dadosPet[11]}) - ${dadosPet[12]}g, ${dadosPet[13]}x ao dia</p>
+        </div>
+    `;
+
+    const listaV = document.getElementById('historico-vacinas');
+    listaV.innerHTML = "";
+    DADOS_GLOBAIS.vacinas.filter(v => v[0] === nomePet).forEach(v => {
+        const li = document.createElement('li');
+        li.innerHTML = `💉 <b>${v[1]}</b> - Data: ${v[2]}`;
+        listaV.appendChild(li);
     });
 }
 
-function carregarVacinas() {
-    const lista = document.getElementById('listaVacinas');
-    const status = document.getElementById('status');
-
-    fetch(SCRIPT_URL)
-    .then(res => res.json())
-    .then(data => {
-        status.style.display = 'none';
-        lista.innerHTML = "";
-        
-        // Exibe os registros da planilha (ignorando o cabeçalho)
-        data.slice(1).reverse().forEach(row => {
-            const li = document.createElement('li');
-            li.innerHTML = `
-                <strong>💉 ${row[6]}</strong> (${row[7]})<br>
-                <small>🐾 <b>${row[0]}</b> | ${row[1]} | ${row[2]} | ${row[4]}kg</small>
-            `;
-            lista.appendChild(li);
-        });
-    });
+function salvarVacina() {
+    const payload = {
+        tipoPost: "NOVA_VACINA",
+        nomePet: PET_ATUAL,
+        vacina: document.getElementById('v_nome').value,
+        data: document.getElementById('v_data').value
+    };
+    fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) })
+    .then(() => { alert("Vacina salva!"); location.reload(); });
 }
 
-window.onload = carregarVacinas;
+function voltarHome() {
+    document.getElementById('tela-home').style.display = 'block';
+    document.getElementById('tela-carteira').style.display = 'none';
+}
+
+window.onload = carregarDados;
