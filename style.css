@@ -1,24 +1,13 @@
-:root { --primary: #27ae60; --pet-card: #ffffff; --bg: #f0f2f5; }
-body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 10px; }
-.container { max-width: 500px; margin: auto; }
-header h1 { text-align: center; color: #333; }
+/* Adicione isso ao seu style.css */
+.pet-foto { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; border: 3px solid var(--primary); }
+.btn-pdf { background: #e67e22; margin-bottom: 10px; }
 
-/* Grid de Pets na Home */
-.pet-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
-.btn-pet-card { background: white; border: none; padding: 20px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; font-weight: bold; font-size: 1.1rem; color: var(--primary); display: flex; flex-direction: column; align-items: center; }
-.btn-pet-card:active { transform: scale(0.95); }
+@media print {
+    .no-print { display: none !important; }
+    body { background: white; padding: 0; }
+    .container { max-width: 100%; }
+    .card { box-shadow: none; border: 1px solid #eee; }
+}
 
-.card { background: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.full-width { grid-column: span 2; }
-
-input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 5px; box-sizing: border-box; }
-button { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 5px; }
-
-.btn-novo { background: #34495e; margin-top: 30px; font-size: 1rem; }
-.btn-cancelar { background: #e74c3c; }
-.btn-voltar { width: auto; background: #95a5a6; margin-bottom: 10px; }
-
-.abas { display: flex; gap: 5px; margin-bottom: 15px; }
-.abas button { background: #ddd; color: #333; }
-.item-hist { background: #fff; padding: 10px; border-radius: 8px; border-left: 4px solid var(--primary); margin-bottom: 8px; font-size: 0.9rem; }
+/* Alinhamento dos itens de histórico */
+.reforco-alerta { color: #e74c3c; font-weight: bold; border-left-color: #e74c3c !important; }
