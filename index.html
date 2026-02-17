@@ -3,56 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PetCare Digital</title>
+    <title>PetCare Pro</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>🐾 Caderneta do Pet</h1>
-    </header>
+    <header><h1>🐾 PetCare Pro</h1></header>
 
     <div class="container">
-        <section class="card">
-            <h2>🏠 Perfil do Pet</h2>
-            <div class="grid">
-                <div class="full-width">
-                    <input type="text" id="nomePet" placeholder="Nome do Pet">
+        <div id="tela-home">
+            <section class="card">
+                <h2>➕ Cadastrar Novo Pet</h2>
+                <div class="grid">
+                    <input type="text" id="nomePet" placeholder="Nome do Pet" class="full-width">
+                    <input type="text" id="especie" placeholder="Espécie">
+                    <input type="text" id="raca" placeholder="Raça">
+                    <input type="number" id="idade" placeholder="Idade">
+                    <input type="text" id="peso" placeholder="Peso (kg)">
+                    <select id="sexo" class="full-width"><option value="Macho">Macho</option><option value="Fêmea">Fêmea</option></select>
                 </div>
-                <input type="text" id="especie" placeholder="Espécie (Ex: Cão)">
-                <input type="text" id="raca" placeholder="Raça">
-                <input type="number" id="idade" placeholder="Idade (anos)">
-                <input type="text" id="peso" placeholder="Peso (kg)">
-                <select id="sexo" class="full-width">
-                    <option value="" disabled selected>Sexo</option>
-                    <option value="Macho">Macho</option>
-                    <option value="Fêmea">Fêmea</option>
-                </select>
-            </div>
-        </section>
+                
+                <h3>🥣 Alimentação Principal</h3>
+                <div class="grid">
+                    <input type="text" id="r_marca" placeholder="Marca Ração">
+                    <input type="text" id="r_tipo" placeholder="Tipo (Seca/Úmida)">
+                    <input type="text" id="r_qtd" placeholder="Gramas">
+                    <input type="text" id="r_freq" placeholder="Vezes ao dia">
+                </div>
 
-        <section class="card">
-            <h2>🥣 Alimentação</h2>
-            <input type="text" id="racao" placeholder="Marca da Ração">
-            <input type="text" id="qtd" placeholder="Quantidade (ex: 100g 2x ao dia)">
-            <textarea id="petiscos" placeholder="Petiscos e restrições..."></textarea>
-        </section>
+                <h3>🦴 Petiscos</h3>
+                <div class="grid">
+                    <input type="text" id="p_marca" placeholder="Marca Petisco">
+                    <input type="text" id="p_tipo" placeholder="Tipo">
+                    <input type="text" id="p_qtd" placeholder="Gramas">
+                    <input type="text" id="p_freq" placeholder="Vezes ao dia">
+                </div>
+                <button onclick="cadastrarPet()">Finalizar Cadastro</button>
+            </section>
 
-        <section class="card">
-            <h2>💉 Registro de Vacina</h2>
-            <div class="grid">
-                <input type="text" id="vacinaNome" placeholder="Nome da Vacina">
-                <input type="date" id="vacinaData">
-                <button onclick="enviarDados()" id="btnSalvar" class="full-width">Salvar na Planilha</button>
-            </div>
-        </section>
+            <section class="card">
+                <h2>🐕 Meus Pets (Acessar Carteira)</h2>
+                <div id="lista-pets-botoes">Carregando pets...</div>
+            </section>
+        </div>
 
-        <section class="card">
-            <h2>📅 Histórico Recente</h2>
-            <div id="status">Carregando dados...</div>
-            <ul id="listaVacinas"></ul>
-        </section>
+        <div id="tela-carteira" style="display:none">
+            <button onclick="voltarHome()" class="btn-voltar">⬅ Voltar</button>
+            <div id="detalhe-pet"></div>
+            
+            <section class="card">
+                <h2>💉 Registrar Vacina para <span id="nome-pet-selecionado"></span></h2>
+                <div class="grid">
+                    <input type="text" id="v_nome" placeholder="Nome da Vacina">
+                    <input type="date" id="v_data">
+                    <button onclick="salvarVacina()" class="full-width">Registrar Vacina</button>
+                </div>
+            </section>
+
+            <section class="card">
+                <h2>📅 Histórico de Vacinas</h2>
+                <ul id="historico-vacinas"></ul>
+            </section>
+        </div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
