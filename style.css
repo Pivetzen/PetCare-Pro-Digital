@@ -1,13 +1,35 @@
-/* Adicione isso ao seu style.css */
-.pet-foto { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; border: 3px solid var(--primary); }
-.btn-pdf { background: #e67e22; margin-bottom: 10px; }
+:root { --primary: #27ae60; --bg: #f0f2f5; --text: #333; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 10px; color: var(--text); }
+.container { max-width: 500px; margin: auto; }
+.card { background: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+
+/* Grid de Pets */
+.pet-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+.btn-pet-card { background: white; border: none; padding: 15px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; display: flex; flex-direction: column; align-items: center; font-weight: bold; color: var(--primary); }
+.pet-thumb { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; border: 2px solid var(--primary); }
+
+/* Formulários */
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.full-width { grid-column: span 2; }
+input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 5px; box-sizing: border-box; font-size: 14px; }
+button { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 5px; }
+
+/* Carteira */
+.card-perfil { text-align: center; background: white; padding: 20px; border-radius: 12px; margin-bottom: 15px; }
+.foto-perfil { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid var(--primary); }
+.abas { display: flex; gap: 5px; margin-bottom: 15px; }
+.abas button { background: #ddd; color: #333; }
+.btn-pdf { background: #e67e22; }
+.btn-voltar { background: #95a5a6; width: auto; }
+.btn-cancelar { background: #e74c3c; }
+
+/* Histórico */
+.item-hist { background: #fff; padding: 12px; border-radius: 8px; border-left: 4px solid var(--primary); margin-bottom: 8px; font-size: 0.9rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+.reforco { border-left-color: #e74c3c; color: #c0392b; font-weight: bold; }
 
 @media print {
     .no-print { display: none !important; }
-    body { background: white; padding: 0; }
+    body { background: white; }
     .container { max-width: 100%; }
-    .card { box-shadow: none; border: 1px solid #eee; }
+    .aba-content { display: block !important; }
 }
-
-/* Alinhamento dos itens de histórico */
-.reforco-alerta { color: #e74c3c; font-weight: bold; border-left-color: #e74c3c !important; }
