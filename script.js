@@ -18,6 +18,17 @@ function mostrarTela(id) {
     document.getElementById(id).style.display = 'block';
 }
 
+// FUNÇÃO PARA DEFINIR O EMOJI BASEADO NA ESPÉCIE
+function getEmoji(especie) {
+    const esp = especie.toLowerCase().trim();
+    if (esp.includes("gato") || esp.includes("felino")) return "🐱";
+    if (esp.includes("cão") || esp.includes("cao") || esp.includes("cachorro")) return "🐶";
+    if (esp.includes("pássaro") || esp.includes("passaro") || esp.includes("ave")) return "🐦";
+    if (esp.includes("coelho")) return "🐰";
+    if (esp.includes("peixe")) return "🐠";
+    return "🐾"; // Emoji padrão caso não identifique
+}
+
 function renderHome() {
     const grid = document.getElementById('lista-pets-grid');
     grid.innerHTML = "";
@@ -28,7 +39,11 @@ function renderHome() {
     DADOS.pets.slice(1).forEach(p => {
         const btn = document.createElement('button');
         btn.className = "btn-pet-card";
-        const img = p[14] ? `<img src="${p[14]}" class="pet-thumb">` : `<div class="pet-thumb" style="display:flex;align-items:center;justify-content:center;background:#eee">🐾</div>`;
+        
+        // Se tiver foto, usa a foto. Se não, usa o emoji dinâmico
+        const emoji = getEmoji(p[1]); // p[1] é a coluna Espécie
+        const img = p[14] ? `<img src="${p[14]}" class="pet-thumb">` : `<div class="pet-thumb" style="display:flex;align-items:center;justify-content:center;background:#eee;font-size:40px">${emoji}</div>`;
+        
         btn.innerHTML = `${img} ${p[0]}`;
         btn.onclick = () => abrirCarteira(p[0]);
         grid.appendChild(btn);
@@ -40,7 +55,9 @@ function abrirCarteira(nome) {
     mostrarTela('tela-carteira');
     const p = DADOS.pets.find(x => x[0] === nome);
     
-    const fotoHTML = p[14] ? `<img src="${p[14]}" class="foto-perfil">` : "";
+    const emoji = getEmoji(p[1]);
+    const fotoHTML = p[14] ? `<img src="${p[14]}" class="foto-perfil">` : `<div class="foto-perfil" style="display:flex;align-items:center;justify-content:center;background:#eee;font-size:60px;margin:0 auto">${emoji}</div>`;
+    
     document.getElementById('cabecalho-pet').innerHTML = `
         ${fotoHTML}
         <h2>${p[0]}</h2>
